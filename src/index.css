@@ -1,36 +1,97 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --ink: #0E0B0C;
-    --aubergine: #2A1621;
-    --ivory: #F7F2EA;
-    --bone: #E9E0D2;
-    --champagne: #C9A66B;
-    --champagne-soft: #E6D3A8;
-    --rose-dust: #C98A8A;
+@theme {
+  /* Surfaces */
+  --color-surface: #18120e;
+  --color-surface-lowest: #130d09;
+  --color-surface-low: #211a16;
+  --color-surface-container: #251e1a;
+  --color-surface-high: #302824;
+  --color-surface-highest: #3b332e;
+  --color-on-surface: #eee0d8;
+  --color-on-surface-variant: #d1c5b7;
+  --color-outline: #9a8f83;
+  --color-outline-variant: #4e453b;
 
-    /* Per-product accents */
-    --scent-mystic-violet: #4B2E5E;
-    --scent-mystic-amber: #B9783C;
-    --scent-heavenly-peach: #F0C9B8;
-    --scent-heavenly-rose: #B76E79;
-    --scent-crush-pink: #E8B4C0;
-    --scent-crush-plum: #6B2D4F;
-    --scent-bleu-navy: #14233F;
-    --scent-bleu-mist: #8FB3C7;
+  /* Gold */
+  --color-primary: #e5c497;
+  --color-on-primary: #402d0c;
+  --color-primary-container: #c8a97e;
+  --color-on-primary-container: #533e1c;
+  --color-primary-fixed: #ffddb0;
+
+  /* Amber accent */
+  --color-secondary-container: #733500;
+  --color-secondary-fixed: #ffdbc7;
+
+  /* Parchment sections */
+  --color-parchment: #eee0d8;
+  --color-parchment-soft: #f5efe6;
+  --color-parchment-card: #ebdcd0;
+  --color-parchment-deep: #dfcbbe;
+  --color-inverse-primary: #735a36;
+  --color-espresso: #231a14;
+  --color-umber: #4a3e36;
+
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --text-display-hero: 64px;
+  --text-display-hero--line-height: 72px;
+  --text-display-hero--letter-spacing: -0.02em;
+  --text-headline-xl: 44px;
+  --text-headline-xl--line-height: 52px;
+  --text-headline-xl--letter-spacing: -0.01em;
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--letter-spacing: 0.01em;
+  --text-headline-sm: 20px;
+  --text-headline-sm--line-height: 28px;
+  --text-headline-sm--letter-spacing: 0.01em;
+  --text-quote: 22px;
+  --text-quote--line-height: 34px;
+  --text-quote--letter-spacing: 0.02em;
+  --text-body-md: 15px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--letter-spacing: 0.01em;
+  --text-body-sm: 13px;
+  --text-body-sm--line-height: 20px;
+  --text-body-sm--letter-spacing: 0.015em;
+  --text-label-lg: 12px;
+  --text-label-lg--line-height: 16px;
+  --text-label-lg--letter-spacing: 0.18em;
+  --text-label-lg--font-weight: 600;
+  --text-label-sm: 10px;
+  --text-label-sm--line-height: 14px;
+  --text-label-sm--letter-spacing: 0.22em;
+  --text-label-sm--font-weight: 600;
+
+  --animate-marquee: marquee 28s linear infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
-    font-family: 'Jost', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: #0E0B0C;
-    color: #F7F2EA;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 24px;
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, .font-serif-luxury {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    letter-spacing: -0.015em;
+    font-family: var(--font-serif);
   }
 
   .font-urdu {
@@ -39,20 +100,16 @@
   }
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0E0B0C;
+  background: var(--color-surface);
 }
 ::-webkit-scrollbar-thumb {
-  background: #2A1621;
+  background: var(--color-surface-highest);
   border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #C9A66B;
 }
 
 .no-scrollbar {
@@ -62,14 +119,8 @@
   display: none;
 }
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
   }
 }
-

@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { StoreProvider, useStore } from './context/StoreContext';
-import { Header } from './components/Header';
-import { Hero } from './components/Hero';
-import { DivineTrioSection } from './components/DivineTrioSection';
-import { DuskBleuSpotlight } from './components/DuskBleuSpotlight';
-import { BrandStorySection } from './components/BrandStorySection';
-import { FragranceWardrobeSection } from './components/FragranceWardrobeSection';
-import { ConsultationTeaserSection } from './components/ConsultationTeaserSection';
-import { JournalPreviewSection } from './components/JournalPreviewSection';
+import { Header, NavKey } from './components/Header';
+import { Home } from './components/Home';
 import { Footer } from './components/Footer';
 import { ProductDetailPage } from './components/ProductDetailPage';
 import { ShopCollection } from './components/ShopCollection';
@@ -21,134 +15,86 @@ import { JournalModal } from './components/JournalModal';
 import { Product } from './types';
 
 function MainApp() {
-  const {
-    setIsCheckoutOpen,
-    setIsScentFinderOpen
-  } = useStore();
+  const { setIsCheckoutOpen } = useStore();
 
   const [currentView, setCurrentView] = useState<'home' | 'shop'>('home');
+  const [shopPreset, setShopPreset] = useState({ family: 'All', type: 'All' });
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [selectedJournalArticleId, setSelectedJournalArticleId] = useState<string | null>(null);
-  const [isJournalModalOpen, setIsJournalModalOpen] = useState(false);
+  const [isJournalOpen, setIsJournalOpen] = useState(false);
+
+  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const handleSelectProduct = (product: Product) => {
     setSelectedProduct(product);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollTop();
   };
 
-  const handleBackFromProduct = () => {
+  const openShop = (family: string = 'All', type: string = 'All') => {
     setSelectedProduct(null);
-  };
-
-  const handleOpenJournalArticle = (articleId: string) => {
-    setSelectedJournalArticleId(articleId);
-    setIsJournalModalOpen(true);
-  };
-
-  const handleViewAllJournal = () => {
-    setSelectedJournalArticleId(null);
-    setIsJournalModalOpen(true);
-  };
-
-  const handleNavigateHome = () => {
-    setSelectedProduct(null);
-    setCurrentView('home');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleNavigateShop = () => {
-    setSelectedProduct(null);
+    setShopPreset({ family, type });
     setCurrentView('shop');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollTop();
   };
 
-  const handleNavigateDivineTrio = () => {
+  const goHome = (sectionId?: string) => {
     setSelectedProduct(null);
     setCurrentView('home');
-    setTimeout(() => {
-      const el = document.getElementById('divine-trio');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+    if (!sectionId) {
+      scrollTop();
+      return;
+    }
+    // Wait for the home sections to mount when coming from another view
+    setTimeout(() => document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' }), 100);
   };
 
-  const handleNavigateDuskBleu = () => {
-    setSelectedProduct(null);
-    setCurrentView('home');
-    setTimeout(() => {
-      const el = document.getElementById('dusk-bleu');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+  const handleNavigate = (key: NavKey) => {
+    if (key === 'home') goHome();
+    else if (key === 'shop') openShop();
+    else if (key === 'quiz') goHome('discovery-quiz');
+    else if (key === 'contact') document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    else goHome(key);
   };
+
+  const onShopPages = selectedProduct !== null || currentView === 'shop';
 
   return (
-    <div className="min-h-screen bg-[#0E0B0C] text-[#F7F2EA] flex flex-col font-sans selection:bg-[#C9A66B]/30 selection:text-[#F7F2EA]">
+    <div className="min-h-screen bg-surface text-on-surface flex flex-col font-sans selection:bg-primary-container selection:text-on-primary-container">
       <Header
-        onNavigateHome={handleNavigateHome}
-        onNavigateShop={handleNavigateShop}
-        onNavigateDivineTrio={handleNavigateDivineTrio}
-        onNavigateDuskBleu={handleNavigateDuskBleu}
-        onNavigateJournal={handleViewAllJournal}
+        active={onShopPages ? 'shop' : 'home'}
+        onNavigate={handleNavigate}
+        onOpenShop={openShop}
+        onNavigateJournal={() => setIsJournalOpen(true)}
       />
 
-      <main className="flex-1">
+      <main className="flex-1 flex flex-col">
         {selectedProduct ? (
           <ProductDetailPage
             product={selectedProduct}
-            onBack={handleBackFromProduct}
+            onBack={() => setSelectedProduct(null)}
             onSelectProduct={handleSelectProduct}
           />
         ) : currentView === 'shop' ? (
           <ShopCollection
+            key={`${shopPreset.family}|${shopPreset.type}`}
+            initialFamily={shopPreset.family}
+            initialType={shopPreset.type}
             onSelectProduct={handleSelectProduct}
-            onBackToHome={handleNavigateHome}
+            onBackToHome={() => goHome()}
           />
         ) : (
-          <>
-            <Hero onExploreCollection={handleNavigateShop} />
-
-            <DivineTrioSection onSelectProduct={handleSelectProduct} />
-
-            {/* Scent finder teaser */}
-            <div className="bg-[#1C1217] border-y border-[#2A1621] py-14 px-4 text-center">
-              <div className="max-w-2xl mx-auto">
-                <h3 className="font-serif-luxury text-3xl sm:text-4xl text-[#F7F2EA] font-light">
-                  Not sure where to begin?
-                </h3>
-                <p className="mt-2 text-xs sm:text-sm text-[#E9E0D2]/75 font-light leading-relaxed">
-                  Answer six quick questions about mood, weather and how strong you like your
-                  perfume, and we'll suggest where to start.
-                </p>
-                <button
-                  onClick={() => setIsScentFinderOpen(true)}
-                  className="mt-6 px-8 py-3 bg-[#C9A66B] hover:bg-[#E6D3A8] text-[#0E0B0C] text-xs uppercase tracking-[0.2em] font-semibold transition-all cursor-pointer shadow-xl inline-flex items-center gap-2"
-                >
-                  <span>Take the Scent Quiz</span>
-                </button>
-              </div>
-            </div>
-
-            <DuskBleuSpotlight onSelectProduct={handleSelectProduct} />
-
-            <BrandStorySection onOpenJournal={handleViewAllJournal} />
-
-            {/* Solid perfumes, candles, hair mist and gift sets */}
-            <FragranceWardrobeSection onSelectProduct={handleSelectProduct} />
-
-            <ConsultationTeaserSection />
-
-            <JournalPreviewSection
-              onOpenArticle={handleOpenJournalArticle}
-              onViewAllJournal={handleViewAllJournal}
+          <div className="pt-[5.75rem]">
+            <Home
+              onSelectProduct={handleSelectProduct}
+              onShopAll={() => openShop()}
+              onSelectFamily={family => openShop(family)}
             />
-          </>
+          </div>
         )}
       </main>
 
-      <Footer
-        onNavigateHome={handleNavigateHome}
-        onNavigateShop={handleNavigateShop}
-        onNavigateJournal={handleViewAllJournal}
-      />
+      <div className="pb-16 lg:pb-0 bg-surface-lowest">
+        <Footer onNavigate={handleNavigate} onNavigateJournal={() => setIsJournalOpen(true)} />
+      </div>
 
       <CartDrawer onProceedToCheckout={() => setIsCheckoutOpen(true)} />
       <ScentFinderModal onSelectProduct={handleSelectProduct} />
@@ -156,10 +102,9 @@ function MainApp() {
       <NotesExplorer onSelectProduct={handleSelectProduct} />
       <CheckoutModal />
       <AccountModal />
-      {isJournalModalOpen && (
+      {isJournalOpen && (
         <JournalModal
-          initialArticleId={selectedJournalArticleId}
-          onClose={() => setIsJournalModalOpen(false)}
+          onClose={() => setIsJournalOpen(false)}
           onSelectProduct={handleSelectProduct}
         />
       )}

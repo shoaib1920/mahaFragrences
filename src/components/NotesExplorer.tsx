@@ -23,17 +23,17 @@ export const NotesExplorer: React.FC<NotesExplorerProps> = ({ onSelectProduct })
   const productsWithNote = PRODUCTS.filter(p => selectedNote.containedIn.includes(p.id));
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0E0B0C]/95 backdrop-blur-xl flex flex-col justify-center items-center p-4 sm:p-6 overflow-y-auto">
-      <div className="relative w-full max-w-5xl bg-[#140F11] border border-[#2A1621] shadow-2xl p-6 sm:p-10 text-[#F7F2EA] my-auto">
+    <div className="fixed inset-0 z-50 bg-[#18120e]/95 backdrop-blur-xl flex flex-col justify-center items-center p-4 sm:p-6 overflow-y-auto">
+      <div className="relative w-full max-w-5xl bg-[#251e1a] border border-[#3b332e] shadow-2xl p-6 sm:p-10 text-[#eee0d8] my-auto">
         {/* Header */}
-        <div className="flex items-center justify-between pb-6 border-b border-[#2A1621]">
-          <h2 className="font-serif-luxury text-2xl sm:text-3xl text-[#F7F2EA] font-light">
+        <div className="flex items-center justify-between pb-6 border-b border-[#3b332e]">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl text-[#eee0d8] font-light">
             Notes Library
           </h2>
 
           <button
             onClick={() => setIsNotesExplorerOpen(false)}
-            className="p-1 text-[#E9E0D2]/70 hover:text-[#F7F2EA] transition-colors cursor-pointer"
+            className="p-1 text-[#d1c5b7]/70 hover:text-[#eee0d8] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -47,8 +47,8 @@ export const NotesExplorer: React.FC<NotesExplorerProps> = ({ onSelectProduct })
               onClick={() => setActiveCategory(cat)}
               className={`px-4 py-1.5 text-xs uppercase tracking-wider font-medium transition-colors cursor-pointer ${
                 activeCategory === cat
-                  ? 'bg-[#C9A66B] text-[#0E0B0C]'
-                  : 'bg-[#1D1418] text-[#E9E0D2]/70 hover:text-[#F7F2EA]'
+                  ? 'bg-[#e5c497] text-[#18120e]'
+                  : 'bg-[#302824] text-[#d1c5b7]/70 hover:text-[#eee0d8]'
               }`}
             >
               {cat === 'All' ? 'All Notes' : `${cat} Notes`}
@@ -66,21 +66,21 @@ export const NotesExplorer: React.FC<NotesExplorerProps> = ({ onSelectProduct })
                   onClick={() => setSelectedNote(note)}
                   className={`p-3.5 border transition-all cursor-pointer flex items-center justify-between ${
                     isSelected
-                      ? 'border-[#C9A66B] bg-[#2A1621]/60'
-                      : 'border-[#2A1621] bg-[#0E0B0C] hover:border-[#C9A66B]/30'
+                      ? 'border-[#e5c497] bg-[#3b332e]/60'
+                      : 'border-[#3b332e] bg-[#18120e] hover:border-[#e5c497]/30'
                   }`}
                 >
                   <div>
-                    <span className="text-[9px] uppercase tracking-wider text-[#C9A66B] block">
+                    <span className="text-[9px] uppercase tracking-wider text-[#e5c497] block">
                       {note.category} Note
                     </span>
-                    <h4 className="font-serif-luxury text-base text-[#F7F2EA]">
+                    <h4 className="font-serif-luxury text-base text-[#eee0d8]">
                       {note.name}
                     </h4>
                   </div>
                   <ArrowRight
                     className={`w-3.5 h-3.5 transition-transform ${
-                      isSelected ? 'text-[#C9A66B] translate-x-1' : 'text-[#E9E0D2]/30'
+                      isSelected ? 'text-[#e5c497] translate-x-1' : 'text-[#d1c5b7]/30'
                     }`}
                   />
                 </div>
@@ -88,41 +88,34 @@ export const NotesExplorer: React.FC<NotesExplorerProps> = ({ onSelectProduct })
             })}
           </div>
 
-          <div className="lg:col-span-7 bg-[#0E0B0C] border border-[#2A1621] p-6 flex flex-col justify-between">
+          <div className="lg:col-span-7 bg-[#18120e] border border-[#3b332e] p-6 flex flex-col justify-between">
             <div>
-              <div className="relative aspect-[16/9] overflow-hidden bg-[#181115] mb-5 border border-[#2A1621]">
-                <img
-                  src={selectedNote.image}
-                  alt={selectedNote.name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-[#0E0B0C]/80 backdrop-blur-md text-[10px] uppercase tracking-wider text-[#C9A66B]">
-                  {selectedNote.category} Note
-                </div>
-              </div>
+              <span className="block text-[10px] uppercase tracking-wider text-[#e5c497] mb-2">
+                {selectedNote.category} Note
+              </span>
 
-              <h3 className="font-serif-luxury text-2xl sm:text-3xl text-[#F7F2EA] font-light">
+              <h3 className="font-serif-luxury text-2xl sm:text-3xl text-[#eee0d8] font-light">
                 {selectedNote.name}
               </h3>
 
-              <div className="mt-4 space-y-2 text-xs text-[#E9E0D2]/80 font-light">
+              <div className="mt-4 space-y-2 text-xs text-[#d1c5b7]/80 font-light">
                 <p>
-                  <strong className="text-[#C9A66B] font-medium">Smells like: </strong>
+                  <strong className="text-[#e5c497] font-medium">Smells like: </strong>
                   {selectedNote.scentProfile}
                 </p>
                 <p>
-                  <strong className="text-[#C9A66B] font-medium">Origin: </strong>
+                  <strong className="text-[#e5c497] font-medium">Origin: </strong>
                   {selectedNote.origin}
                 </p>
                 <p>
-                  <strong className="text-[#C9A66B] font-medium">Mood: </strong>
+                  <strong className="text-[#e5c497] font-medium">Mood: </strong>
                   {selectedNote.evokes}
                 </p>
               </div>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-[#2A1621]">
-              <span className="text-[10px] uppercase tracking-[0.25em] text-[#C9A66B] block mb-3 font-medium">
+            <div className="mt-6 pt-6 border-t border-[#3b332e]">
+              <span className="text-[10px] uppercase tracking-[0.25em] text-[#e5c497] block mb-3 font-medium">
                 Found in
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -133,17 +126,17 @@ export const NotesExplorer: React.FC<NotesExplorerProps> = ({ onSelectProduct })
                       setIsNotesExplorerOpen(false);
                       onSelectProduct(prod);
                     }}
-                    className="p-3 bg-[#140F11] border border-[#2A1621] hover:border-[#C9A66B]/50 transition-all cursor-pointer flex items-center justify-between group"
+                    className="p-3 bg-[#251e1a] border border-[#3b332e] hover:border-[#e5c497]/50 transition-all cursor-pointer flex items-center justify-between group"
                   >
                     <div>
-                      <span className="text-[9px] uppercase tracking-wider text-[#E9E0D2]/50 block">
+                      <span className="text-[9px] uppercase tracking-wider text-[#d1c5b7]/50 block">
                         {prod.volume} · {prod.concentration}
                       </span>
-                      <h5 className="font-serif-luxury text-sm text-[#F7F2EA] group-hover:text-[#C9A66B] transition-colors">
+                      <h5 className="font-serif-luxury text-sm text-[#eee0d8] group-hover:text-[#e5c497] transition-colors">
                         {prod.name}
                       </h5>
                     </div>
-                    <span className="text-xs text-[#C9A66B] group-hover:translate-x-1 transition-transform">
+                    <span className="text-xs text-[#e5c497] group-hover:translate-x-1 transition-transform">
                       →
                     </span>
                   </div>

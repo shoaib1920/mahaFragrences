@@ -56,12 +56,7 @@ export interface Product {
   moodMeters: MoodMeters;
   bestFor: BestFor;
   accentTheme: AccentTheme;
-  images: {
-    main: string;
-    secondary: string;
-    ingredient: string;
-    lifestyle?: string;
-  };
+  image?: string;
   description: string;
   originStory: string;
   storySlug?: string;
@@ -102,7 +97,6 @@ export interface JournalArticle {
   category: string;
   navLabel: string;
   readTime: string;
-  heroImage: string;
   content: string[];
   contentUrdu: string[];
   pullQuote?: string;
@@ -117,7 +111,6 @@ export interface OlfactoryNote {
   scentProfile: string;
   origin: string;
   evokes: string;
-  image: string;
   containedIn: string[]; // product IDs
 }
 

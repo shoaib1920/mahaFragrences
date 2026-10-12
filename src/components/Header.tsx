@@ -1,352 +1,205 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../context/StoreContext';
-import { ShoppingBag, Heart, Home, Compass, Calendar, User, Menu, X, Globe } from 'lucide-react';
-import { BRAND, whatsappUrl, whatsappDisplay } from '../config/brand';
+import { Menu, X, Search, ShoppingBag, User, ArrowRight, Flower2, LayoutGrid, Compass, Heart } from 'lucide-react';
+import { ScentFamily } from '../types';
+
+export type NavKey = 'home' | 'shop' | 'about' | 'collections' | 'quiz' | 'contact';
 
 interface HeaderProps {
-  onNavigateHome: () => void;
-  onNavigateShop: () => void;
-  onNavigateDivineTrio: () => void;
-  onNavigateDuskBleu: () => void;
+  active: 'home' | 'shop';
+  onNavigate: (key: NavKey) => void;
+  onOpenShop: (family?: ScentFamily | 'All', type?: string) => void;
   onNavigateJournal: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  onNavigateHome,
-  onNavigateShop,
-  onNavigateDivineTrio,
-  onNavigateDuskBleu,
-  onNavigateJournal
-}) => {
-  const {
-    cartCount,
-    setIsCartOpen,
-    wishlist,
-    language,
-    setLanguage,
-    setIsScentFinderOpen,
-    setIsConsultationOpen,
-    setIsNotesExplorerOpen,
-    setIsAccountOpen
-  } = useStore();
+const ANNOUNCEMENT = 'Free delivery on orders above Rs. 3,000 · Cash on delivery across Pakistan';
 
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const COLLECTIONS = [
+  { label: 'Eau de Parfum', type: 'Eau de Parfum' },
+  { label: 'Solid Perfumes', type: 'Solid Perfume Wax' },
+  { label: 'Gift Sets', type: 'Gift Set' }
+];
+
+const FAMILIES: { label: string; family: ScentFamily }[] = [
+  { label: 'Floral', family: 'Floral' },
+  { label: 'Woody', family: 'Woody' },
+  { label: 'Fruity', family: 'Fruity-Floral' },
+  { label: 'Fresh', family: 'Fresh & Aquatic' }
+];
+
+export const Header: React.FC<HeaderProps> = ({ active, onNavigate, onOpenShop, onNavigateJournal }) => {
+  const { cartCount, setIsCartOpen, setIsAccountOpen, setIsConsultationOpen } = useStore();
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+    document.body.style.overflow = drawerOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [drawerOpen]);
+
+  const closeThen = (fn: () => void) => () => {
+    setDrawerOpen(false);
+    fn();
+  };
+
+  const iconButton = 'w-11 h-11 flex items-center justify-center transition-colors cursor-pointer';
+  const desktopLink = 'hidden lg:inline-flex items-center text-label-sm text-on-surface-variant hover:text-primary transition-colors tracking-[0.18em] uppercase px-2 cursor-pointer';
 
   return (
     <>
-      {/* Announcement bar */}
-      <div className="bg-[#2A1621] text-[#F7F2EA] text-[10px] tracking-[0.25em] uppercase py-2 px-4 text-center border-b border-[#C9A66B]/15 relative z-40 transition-colors">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <span className="hidden sm:inline text-[#C9A66B] font-light">
-            Cash on Delivery Nationwide
-          </span>
-          <span className="mx-auto sm:mx-0 font-medium text-[#F7F2EA]/90">
-            Free Shipping on Orders Above Rs. 3,000
-          </span>
-          <div className="hidden sm:flex items-center gap-3">
-            <button
-              onClick={() => setLanguage(language === 'en' ? 'ur' : 'en')}
-              className="text-[#C9A66B] hover:text-[#F7F2EA] transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <Globe className="w-3 h-3" />
-              <span>{language === 'en' ? 'اردو' : 'English'}</span>
-            </button>
+      <header className="fixed top-0 inset-x-0 z-40 bg-surface-lowest/85 backdrop-blur-xl shadow-[0_12px_32px_-8px_rgba(10,6,4,0.65)]">
+        <div className="bg-surface-low overflow-hidden h-7 flex items-center">
+          <div className="animate-marquee whitespace-nowrap flex items-center w-max">
+            {[0, 1, 2, 3].map(i => (
+              <span key={i} aria-hidden={i > 0} className="text-label-sm text-primary uppercase px-6">
+                {ANNOUNCEMENT}
+              </span>
+            ))}
           </div>
         </div>
-      </div>
 
-      <header
-        className={`sticky top-0 z-30 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-[#0E0B0C]/90 backdrop-blur-md py-3.5 border-b border-[#C9A66B]/20 shadow-2xl'
-            : 'bg-transparent py-5'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Mobile Menu trigger */}
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden p-2 text-[#F7F2EA] hover:text-[#C9A66B] transition-colors cursor-pointer"
-            aria-label="Open Navigation Menu"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-
-          {/* Left Navigation (Desktop) */}
-          <nav className="hidden lg:flex items-center gap-7 text-[12px] uppercase tracking-[0.22em] text-[#F7F2EA]/80 font-light">
-            <button
-              onClick={onNavigateShop}
-              className="hover:text-[#C9A66B] transition-colors cursor-pointer relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-[#C9A66B] hover:after:w-full after:transition-all"
-            >
-              Perfumes
+        <div className="h-16 px-5 md:px-10 lg:px-20 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1 flex-1">
+            <button type="button" onClick={() => setDrawerOpen(true)} className={`${iconButton} text-primary hover:text-primary-fixed -ml-2.5`} aria-label="Open menu">
+              <Menu className="w-6 h-6" strokeWidth={1.5} />
             </button>
-            <button
-              onClick={onNavigateDivineTrio}
-              className="hover:text-[#C9A66B] transition-colors cursor-pointer relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-[#C9A66B] hover:after:w-full after:transition-all"
-            >
-              The Divine Trio
+            <button type="button" onClick={() => onNavigate('quiz')} className="hidden min-[380px]:inline-flex items-center text-label-sm text-on-surface-variant hover:text-primary transition-colors tracking-[0.18em] uppercase px-1 cursor-pointer">
+              Finder
             </button>
-            <button
-              onClick={onNavigateDuskBleu}
-              className="hover:text-[#C9A66B] transition-colors cursor-pointer relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-[#C9A66B] hover:after:w-full after:transition-all text-[#8FB3C7]/90"
-            >
-              Dusk BLEU
-            </button>
-            <button
-              onClick={() => setIsScentFinderOpen(true)}
-              className="hover:text-[#C9A66B] transition-colors cursor-pointer relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-[#C9A66B] hover:after:w-full after:transition-all"
-            >
-              Scent Quiz
-            </button>
-          </nav>
-
-          {/* Logo */}
-          <div
-            onClick={onNavigateHome}
-            className="cursor-pointer text-center select-none group flex flex-col items-center"
-          >
-            <span className="font-serif-luxury text-xl sm:text-2xl md:text-3xl tracking-[0.22em] uppercase text-[#F7F2EA] group-hover:text-[#C9A66B] transition-colors font-light">
-              {BRAND.shortName}
-            </span>
-            <span className="text-[8px] sm:text-[9px] tracking-[0.45em] uppercase text-[#C9A66B] font-light -mt-0.5">
-              Fragrances
-            </span>
+            <button type="button" onClick={() => onNavigate('shop')} className={desktopLink}>Collections</button>
+            <button type="button" onClick={() => onNavigate('collections')} className={desktopLink}>Families</button>
+            <button type="button" onClick={() => onNavigate('about')} className={desktopLink}>Philosophy</button>
           </div>
 
-          {/* Right navigation */}
-          <div className="flex items-center gap-4 sm:gap-6">
-            <button
-              onClick={() => setIsNotesExplorerOpen(true)}
-              className="hidden lg:inline-block text-[11px] uppercase tracking-[0.2em] text-[#F7F2EA]/70 hover:text-[#C9A66B] transition-colors cursor-pointer"
-            >
-              Notes
-            </button>
+          <button type="button" onClick={() => onNavigate('home')} className="flex items-center gap-1.5 cursor-pointer" aria-label="Maha Fragrances, home">
+            <span className="font-serif text-headline-sm tracking-[0.25em] uppercase text-primary">MAHA</span>
+            <span className="hidden sm:inline text-label-sm text-outline font-light">FRAGRANCES</span>
+          </button>
 
-            <button
-              onClick={onNavigateJournal}
-              className="hidden lg:inline-block text-[11px] uppercase tracking-[0.2em] text-[#F7F2EA]/70 hover:text-[#C9A66B] transition-colors cursor-pointer"
-            >
-              Journal
+          <div className="flex items-center gap-1 flex-1 justify-end">
+            <button type="button" onClick={() => onNavigate('shop')} className={`${iconButton} text-on-surface-variant hover:text-primary`} aria-label="Search the catalogue">
+              <Search className="w-5 h-5" strokeWidth={1.5} />
             </button>
-
-            <button
-              onClick={() => setIsConsultationOpen(true)}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 border border-[#C9A66B]/50 text-[10px] uppercase tracking-[0.2em] text-[#C9A66B] hover:bg-[#C9A66B] hover:text-[#0E0B0C] transition-all cursor-pointer rounded-xs"
-            >
-              <Calendar className="w-3 h-3" />
-              <span>Book a Consultation</span>
-            </button>
-
-            <button
-              onClick={() => setIsAccountOpen(true)}
-              className="p-1.5 text-[#F7F2EA]/80 hover:text-[#C9A66B] transition-colors cursor-pointer"
-              title="Account"
-            >
-              <User className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => setIsAccountOpen(true)}
-              className="relative p-1.5 text-[#F7F2EA]/80 hover:text-[#C9A66B] transition-colors cursor-pointer"
-              title="Wishlist"
-            >
-              <Heart className="w-4 h-4" />
-              {wishlist.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#6B2D4F] text-[#F7F2EA] text-[9px] rounded-full flex items-center justify-center font-medium">
-                  {wishlist.length}
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="relative p-1.5 text-[#F7F2EA] hover:text-[#C9A66B] transition-colors cursor-pointer flex items-center"
-              aria-label="View Shopping Cart"
-            >
-              <ShoppingBag className="w-4.5 h-4.5" />
+            <button type="button" onClick={() => setIsCartOpen(true)} className={`${iconButton} text-primary hover:text-primary-fixed relative`} aria-label={`Shopping bag, ${cartCount} items`}>
+              <ShoppingBag className="w-[22px] h-[22px]" strokeWidth={1.5} />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#C9A66B] text-[#0E0B0C] text-[10px] font-semibold rounded-full flex items-center justify-center shadow-lg">
+                <span className="absolute top-2 right-1.5 min-w-4 h-4 px-1 rounded-full bg-primary text-on-primary text-[9px] flex items-center justify-center leading-none font-bold">
                   {cartCount}
                 </span>
               )}
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsAccountOpen(true)}
+              className="w-8 h-8 ml-1 -mr-1 rounded-xl bg-surface-high text-primary flex items-center justify-center shadow-[0_0_1px_1px_rgba(200,169,126,0.25)] cursor-pointer hover:text-primary-fixed transition-colors"
+              aria-label="Account and wishlist"
+            >
+              <User className="w-4 h-4" strokeWidth={1.5} />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-[#0E0B0C] text-[#F7F2EA] flex flex-col p-6 overflow-y-auto">
-          <div className="flex items-center justify-between border-b border-[#C9A66B]/20 pb-4">
-            <div>
-              <p className="font-serif-luxury text-xl tracking-[0.2em] uppercase text-[#C9A66B]">
-                {BRAND.name}
-              </p>
-            </div>
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-2 text-[#F7F2EA] hover:text-[#C9A66B]"
-            >
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-
-          <div className="flex flex-col gap-6 my-8 text-lg font-serif-luxury tracking-[0.1em]">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onNavigateHome();
-              }}
-              className="text-left py-2 hover:text-[#C9A66B] border-b border-[#F7F2EA]/5"
-            >
-              Home
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onNavigateShop();
-              }}
-              className="text-left py-2 hover:text-[#C9A66B] border-b border-[#F7F2EA]/5"
-            >
-              Shop All
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onNavigateDivineTrio();
-              }}
-              className="text-left py-2 hover:text-[#C9A66B] border-b border-[#F7F2EA]/5"
-            >
-              The Divine Trio
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onNavigateDuskBleu();
-              }}
-              className="text-left py-2 hover:text-[#8FB3C7] border-b border-[#F7F2EA]/5"
-            >
-              Dusk BLEU
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                setIsScentFinderOpen(true);
-              }}
-              className="text-left py-2 hover:text-[#C9A66B] border-b border-[#F7F2EA]/5"
-            >
-              Scent Quiz
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                setIsNotesExplorerOpen(true);
-              }}
-              className="text-left py-2 hover:text-[#C9A66B] border-b border-[#F7F2EA]/5"
-            >
-              Notes Library
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onNavigateJournal();
-              }}
-              className="text-left py-2 hover:text-[#C9A66B] border-b border-[#F7F2EA]/5"
-            >
-              Journal
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                setIsConsultationOpen(true);
-              }}
-              className="text-left py-2 text-[#C9A66B] border-b border-[#F7F2EA]/5"
-            >
-              Book a Consultation
-            </button>
-          </div>
-
-          <div className="mt-auto pt-6 border-t border-[#C9A66B]/20 flex flex-col gap-4 text-xs text-[#F7F2EA]/70">
-            <div className="flex items-center justify-between">
-              <span>Language:</span>
-              <button
-                onClick={() => setLanguage(language === 'en' ? 'ur' : 'en')}
-                className="text-[#C9A66B] font-medium"
-              >
-                {language === 'en' ? 'اردو میں دیکھیں' : 'Switch to English'}
+      {/* Drawer */}
+      <div
+        className={`fixed inset-0 z-50 flex transition-transform duration-500 ease-out ${drawerOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        aria-hidden={!drawerOpen}
+      >
+        <div className="w-5/6 max-w-sm h-full bg-surface-lowest/95 backdrop-blur-2xl flex flex-col justify-between shadow-[0_24px_64px_-12px_rgba(0,0,0,0.9)] overflow-y-auto">
+          <div className="p-7 flex flex-col gap-7">
+            <div className="flex items-center justify-between pb-2">
+              <div className="flex flex-col">
+                <span className="font-serif text-headline-sm tracking-[0.2em] text-primary uppercase">MAHA</span>
+                <span className="text-label-sm text-outline tracking-[0.18em] uppercase">The Art of Scent</span>
+              </div>
+              <button type="button" onClick={() => setDrawerOpen(false)} className={`${iconButton} text-on-surface-variant hover:text-primary -mr-2.5`} aria-label="Close menu">
+                <X className="w-6 h-6" strokeWidth={1.5} />
               </button>
             </div>
-            {whatsappUrl && (
-              <div>
-                <p className="text-[10px] uppercase tracking-wider text-[#C9A66B] mb-1">
-                  WhatsApp
-                </p>
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-sm font-sans text-[#F7F2EA] hover:text-[#C9A66B]"
-                >
-                  {whatsappDisplay}
-                </a>
+
+            <div className="flex flex-col gap-2">
+              <span className="text-label-sm text-outline uppercase">Collections</span>
+              <nav aria-label="Collections" className="flex flex-col gap-1">
+                {COLLECTIONS.map(c => (
+                  <button
+                    key={c.type}
+                    type="button"
+                    onClick={closeThen(() => onOpenShop('All', c.type))}
+                    className="py-2 text-left font-serif text-headline-sm font-semibold text-on-surface hover:text-primary transition-colors cursor-pointer"
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <span className="text-label-sm text-outline uppercase">Fragrance Families</span>
+              <div className="grid grid-cols-2 gap-1">
+                {FAMILIES.map(f => (
+                  <button
+                    key={f.family}
+                    type="button"
+                    onClick={closeThen(() => onOpenShop(f.family))}
+                    className="px-4 py-2 bg-surface-high rounded-[2px] text-center text-label-sm text-on-surface hover:text-primary transition-colors uppercase cursor-pointer"
+                  >
+                    {f.label}
+                  </button>
+                ))}
               </div>
-            )}
+            </div>
+
+            <div className="flex flex-col gap-1 pt-1">
+              <button type="button" onClick={closeThen(() => onNavigate('quiz'))} className="flex items-center justify-between py-2 text-label-lg text-primary uppercase cursor-pointer">
+                <span>Interactive Scent Quiz</span>
+                <ArrowRight className="w-[18px] h-[18px]" strokeWidth={1.5} />
+              </button>
+              <button type="button" onClick={closeThen(() => onNavigate('about'))} className="py-2 text-left text-label-lg text-on-surface-variant hover:text-on-surface uppercase transition-colors cursor-pointer">
+                Atelier Philosophy
+              </button>
+              <button type="button" onClick={closeThen(onNavigateJournal)} className="py-2 text-left text-label-lg text-on-surface-variant hover:text-on-surface uppercase transition-colors cursor-pointer">
+                Journal
+              </button>
+              <button type="button" onClick={closeThen(() => setIsConsultationOpen(true))} className="py-2 text-left text-label-lg text-on-surface-variant hover:text-on-surface uppercase transition-colors cursor-pointer">
+                Boutique Services
+              </button>
+            </div>
+          </div>
+
+          <div className="p-7 bg-surface-lowest flex flex-col gap-1">
+            <span className="text-label-sm text-outline uppercase">Concierge</span>
+            <span className="text-body-sm text-on-surface-variant">Private consultations by video or WhatsApp call.</span>
           </div>
         </div>
-      )}
-
-      {/* Mobile bottom bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-[#0E0B0C]/95 backdrop-blur-md border-t border-[#C9A66B]/20 py-2 px-6 flex items-center justify-around text-[10px] uppercase tracking-wider">
-        <button
-          onClick={onNavigateHome}
-          className="flex flex-col items-center gap-1 text-[#F7F2EA]/70 hover:text-[#C9A66B]"
-        >
-          <Home className="w-4 h-4" />
-          <span>Home</span>
-        </button>
-        <button
-          onClick={() => setIsScentFinderOpen(true)}
-          className="flex flex-col items-center gap-1 text-[#F7F2EA]/70 hover:text-[#C9A66B]"
-        >
-          <Compass className="w-4 h-4" />
-          <span>Quiz</span>
-        </button>
-        <button
-          onClick={() => setIsConsultationOpen(true)}
-          className="flex flex-col items-center gap-1 text-[#F7F2EA]/70 hover:text-[#C9A66B]"
-        >
-          <Calendar className="w-4 h-4" />
-          <span>Book</span>
-        </button>
-        <button
-          onClick={() => setIsCartOpen(true)}
-          className="relative flex flex-col items-center gap-1 text-[#F7F2EA]/70 hover:text-[#C9A66B]"
-        >
-          <ShoppingBag className="w-4 h-4" />
-          <span>Cart</span>
-          {cartCount > 0 && (
-            <span className="absolute -top-1 -right-2 w-3.5 h-3.5 bg-[#C9A66B] text-[#0E0B0C] text-[8px] font-bold rounded-full flex items-center justify-center">
-              {cartCount}
-            </span>
-          )}
-        </button>
-        <button
-          onClick={() => setIsAccountOpen(true)}
-          className="flex flex-col items-center gap-1 text-[#F7F2EA]/70 hover:text-[#C9A66B]"
-        >
-          <User className="w-4 h-4" />
-          <span>Account</span>
-        </button>
+        <div className="flex-1 h-full bg-surface-lowest/60 backdrop-blur-sm" onClick={() => setDrawerOpen(false)} />
       </div>
+
+      {/* Bottom tab bar */}
+      <nav aria-label="Primary" className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-surface-lowest/90 backdrop-blur-xl shadow-[0_-8px_32px_rgba(0,0,0,0.5)] pb-[env(safe-area-inset-bottom,0px)]">
+        <div className="flex justify-around items-center h-16 px-2">
+          {[
+            { label: 'Atelier', Icon: Flower2, onClick: () => onNavigate('home'), current: active === 'home' },
+            { label: 'Collections', Icon: LayoutGrid, onClick: () => onNavigate('shop'), current: active === 'shop' },
+            { label: 'Quiz', Icon: Compass, onClick: () => onNavigate('quiz'), current: false },
+            { label: 'Vault', Icon: Heart, onClick: () => setIsAccountOpen(true), current: false },
+            { label: 'Bag', Icon: ShoppingBag, onClick: () => setIsCartOpen(true), current: false }
+          ].map(({ label, Icon, onClick, current }) => (
+            <button
+              key={label}
+              type="button"
+              onClick={onClick}
+              aria-current={current ? 'page' : undefined}
+              className={`flex flex-col items-center justify-center gap-1 w-16 h-14 transition-colors cursor-pointer ${
+                current ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
+              }`}
+            >
+              <Icon className="w-[22px] h-[22px]" strokeWidth={1.5} />
+              <span className="text-[9px] font-semibold tracking-widest uppercase">{label}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
     </>
   );
 };

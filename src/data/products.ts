@@ -3,6 +3,7 @@ import { Product } from '../types';
 export const PRODUCTS: Product[] = [
   {
     id: 'mystic-fall-edp',
+    image: '/images/maha-oud.jpg',
     name: 'Mystic Fall',
     slug: 'mystic-fall',
     subtitle: 'Woody, smoky and long-lasting',
@@ -44,12 +45,6 @@ export const PRODUCTS: Product[] = [
       bgGradient: 'from-[#1A1021] via-[#0E0B0C] to-[#201319]',
       name: 'Smoked Violet & Amber'
     },
-    images: {
-      main: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=85',
-      secondary: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1000&q=85',
-      ingredient: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1000&q=85',
-      lifestyle: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=1000&q=85'
-    },
     description: 'The deepest scent in the range. It opens on cedarwood and agarwood, softens into violet and a cool marine leaf note, and dries down to amberwood and smoky guaiacwood. Rich enough for winter evenings, and it stays on well into the night.',
     originStory: 'Inspired by the hour just after sunset, when the air cools down.',
     storySlug: 'mystic-fall-notes',
@@ -59,6 +54,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'heavenly-divine-edp',
+    image: '/images/maha-solar.jpg',
     name: 'Heavenly Divine',
     slug: 'heavenly-divine',
     subtitle: 'Fruity-floral, bright and warm',
@@ -100,12 +96,6 @@ export const PRODUCTS: Product[] = [
       bgGradient: 'from-[#231518] via-[#0E0B0C] to-[#251A1C]',
       name: 'Blush Peach & Rose'
     },
-    images: {
-      main: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=1000&q=85',
-      secondary: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=85',
-      ingredient: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=1000&q=85',
-      lifestyle: 'https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=1000&q=85'
-    },
     description: 'Peach and freesia up top, with a touch of absinthe that keeps it from turning too sweet. Rose and iris come through in the heart, over a base of sandalwood, musk, amber and vanilla. An easy daytime perfume that works all year.',
     originStory: 'Made to be the one you reach for on most mornings.',
     storySlug: 'heavenly-divine-notes',
@@ -115,6 +105,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'forever-crush-edp',
+    image: '/images/maha-amber.jpg',
     name: 'Forever Crush',
     slug: 'forever-crush',
     subtitle: 'Soft, light and romantic',
@@ -156,12 +147,6 @@ export const PRODUCTS: Product[] = [
       bgGradient: 'from-[#1E1118] via-[#0E0B0C] to-[#2B1421]',
       name: 'Soft Pink & Plum'
     },
-    images: {
-      main: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=1000&q=85',
-      secondary: 'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?auto=format&fit=crop&w=1000&q=85',
-      ingredient: 'https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=1000&q=85',
-      lifestyle: 'https://images.unsplash.com/photo-1583445013765-46c20c4a6772?auto=format&fit=crop&w=1000&q=85'
-    },
     description: 'Our softest floral. Mandarin and boysenberry open it, with a green lift from Himalayan red grass. The heart is jasmine sambac (motia), black plum and iris with a little black tea, and it dries down to sandalwood, cedarwood and amber.',
     originStory: 'A romantic floral that gets noticed without being loud.',
     storySlug: 'forever-crush-notes',
@@ -171,6 +156,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'dusk-bleu-edp',
+    image: '/images/maha-leather.jpg',
     name: 'Dusk BLEU',
     slug: 'dusk-bleu',
     subtitle: 'Fresh citrus and fig, made for the heat',
@@ -211,12 +197,6 @@ export const PRODUCTS: Product[] = [
       glowColor: 'rgba(20, 35, 63, 0.55)',
       bgGradient: 'from-[#0A1320] via-[#0E0B0C] to-[#121E31]',
       name: 'Twilight Navy & Sea Mist'
-    },
-    images: {
-      main: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=1000&q=85',
-      secondary: 'https://images.unsplash.com/photo-1582211594533-268f4f1edcb9?auto=format&fit=crop&w=1000&q=85',
-      ingredient: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1000&q=85',
-      lifestyle: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=85'
     },
     description: 'A fresh scent made for hot, humid weather. Citron, mint and coriander open it, basil and May rose sit in the heart, and it settles into fig, dates and ambrette, which give it more staying power than most fresh perfumes. Works equally well on men and women.',
     originStory: 'Inspired by the Karachi coastline at sunset, when the sea breeze finally comes in.',
@@ -268,11 +248,6 @@ export const PRODUCTS: Product[] = [
       bgGradient: 'from-[#1A1021] via-[#0E0B0C] to-[#201319]',
       name: 'Smoked Violet & Amber'
     },
-    images: {
-      main: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1000&q=85',
-      secondary: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=85',
-      ingredient: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1000&q=85'
-    },
     description: 'Mystic Fall as an alcohol-free solid perfume, made with beeswax and shea butter. Dab it on your wrists and neck. It comes in a slim sliding tin that fits in a pocket or clutch and will not leak in your bag.',
     originStory: 'Made for travelling, when a glass bottle is one more thing to worry about.',
     pairingProductIds: ['mystic-fall-edp'],
@@ -320,11 +295,6 @@ export const PRODUCTS: Product[] = [
       glowColor: 'rgba(183, 110, 121, 0.4)',
       bgGradient: 'from-[#231518] via-[#0E0B0C] to-[#251A1C]',
       name: 'Blush Peach & Rose'
-    },
-    images: {
-      main: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=1000&q=85',
-      secondary: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=1000&q=85',
-      ingredient: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=85'
     },
     description: 'Heavenly Divine as an alcohol-free solid perfume. Dab it on your wrists, collarbones or the ends of your hair for a softer, closer version of the perfume.',
     originStory: 'A nod to the way attar has always been worn here: dabbed on, not sprayed.',
@@ -374,11 +344,6 @@ export const PRODUCTS: Product[] = [
       bgGradient: 'from-[#1E1118] via-[#0E0B0C] to-[#2B1421]',
       name: 'Soft Pink & Plum'
     },
-    images: {
-      main: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=1000&q=85',
-      secondary: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=1000&q=85',
-      ingredient: 'https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=1000&q=85'
-    },
     description: 'The Forever Crush scent for your home. A coconut-soy candle in an amber glass jar with a wooden wick that crackles softly as it burns. Black plum and jasmine sambac, with around 40 hours of burn time.',
     originStory: 'Made so a favourite perfume can scent the room as well.',
     pairingProductIds: ['forever-crush-edp'],
@@ -426,11 +391,6 @@ export const PRODUCTS: Product[] = [
       glowColor: 'rgba(107, 45, 79, 0.45)',
       bgGradient: 'from-[#1E1118] via-[#0E0B0C] to-[#2B1421]',
       name: 'Soft Pink & Plum'
-    },
-    images: {
-      main: 'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?auto=format&fit=crop&w=1000&q=85',
-      secondary: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=1000&q=85',
-      ingredient: 'https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=1000&q=85'
     },
     description: 'A lighter take on Forever Crush, made for hair. The low-alcohol formula has argan oil and pro-vitamin B5, so it scents your hair without drying it out. Spray through the lengths and ends.',
     originStory: 'Inspired by the old habit of scenting hair, in a form that is kinder to it than perfume.',
@@ -480,11 +440,6 @@ export const PRODUCTS: Product[] = [
       bgGradient: 'from-[#101E25] via-[#0E0B0C] to-[#15232A]',
       name: 'Aqua Mist & Champagne'
     },
-    images: {
-      main: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1000&q=85',
-      secondary: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1000&q=85',
-      ingredient: 'https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=1000&q=85'
-    },
     description: 'A gift box with the Water Boost Hydrating Facial Mist, the Hyaluronic Infusion Body Elixir and a silk headband. It arrives ribboned, with a gift card for your message.',
     originStory: 'Perfume lasts longer on hydrated skin, so this set is where the routine starts.',
     pairingProductIds: ['heavenly-divine-edp', 'dusk-bleu-edp'],
@@ -532,11 +487,6 @@ export const PRODUCTS: Product[] = [
       glowColor: 'rgba(201, 166, 107, 0.45)',
       bgGradient: 'from-[#2A1621] via-[#0E0B0C] to-[#1C1217]',
       name: 'Champagne & Aubergine'
-    },
-    images: {
-      main: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1000&q=85',
-      secondary: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=85',
-      ingredient: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=1000&q=85'
     },
     description: 'Mystic Fall, Heavenly Divine and Forever Crush in three refillable 15ml travel sprays. The easiest way to try all three before committing to a full bottle, and a good gift if you are not sure which one they would like.',
     originStory: 'Made for trying the range, and for travelling with it.',

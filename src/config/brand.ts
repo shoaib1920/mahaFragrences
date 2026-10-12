@@ -10,6 +10,9 @@ export const BRAND = {
   youtube: '',
   // e.g. ['Karachi Studio, Clifton']
   studios: [] as string[],
+  // Form endpoint from your email provider (Mailchimp, Formspree, etc).
+  // The home page shows the newsletter sign-up once this is set.
+  newsletterAction: '',
 };
 
 export const whatsappUrl = BRAND.whatsapp ? `https://wa.me/${BRAND.whatsapp}` : '';

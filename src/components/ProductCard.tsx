@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Product } from '../types';
 import { useStore } from '../context/StoreContext';
-import { Heart, Plus, Check } from 'lucide-react';
+import { Heart, ShoppingBag } from 'lucide-react';
+import { ProductVisual } from './ProductVisual';
 
 interface ProductCardProps {
   product: Product;
@@ -10,120 +11,93 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) => {
   const { addToCart, wishlist, toggleWishlist } = useStore();
-  const [isHovered, setIsHovered] = useState(false);
-  const [addedJustNow, setAddedJustNow] = useState(false);
+  const [added, setAdded] = useState(false);
 
   const isFavorited = wishlist.includes(product.id);
+  const accords = [
+    { stage: 'Top', note: product.notes.top[0] },
+    { stage: 'Heart', note: product.notes.heart[0] },
+    { stage: 'Base', note: product.notes.base[0] }
+  ].filter(a => a.note);
+  const noteLine = [product.notes.top[0], product.notes.heart[0], product.notes.base[0]].filter(Boolean).join(', ');
 
-  const handleQuickAdd = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleAdd = () => {
     addToCart(product, 1);
-    setAddedJustNow(true);
-    setTimeout(() => setAddedJustNow(false), 1800);
-  };
-
-  const handleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    toggleWishlist(product.id);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
   };
 
   return (
-    <div
-      onClick={() => onSelect(product)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="group flex flex-col bg-[#0E0B0C] cursor-pointer transition-all duration-300 relative"
-    >
-      <div className="relative aspect-[3/4] overflow-hidden bg-[#161214] border border-[#2A1621] group-hover:border-[#C9A66B]/40 transition-colors">
-        <img
-          src={isHovered && product.images.secondary ? product.images.secondary : product.images.main}
-          alt={product.name}
-          className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-          loading="lazy"
-        />
-
-        <button
-          onClick={handleFavorite}
-          className="absolute top-3 right-3 p-2 rounded-full bg-[#0E0B0C]/60 backdrop-blur-md text-[#F7F2EA] hover:text-[#C9A66B] transition-colors z-10 cursor-pointer"
-          aria-label={isFavorited ? 'Remove from wishlist' : 'Save to wishlist'}
-        >
-          <Heart
-            className={`w-4 h-4 transition-transform ${
-              isFavorited ? 'fill-[#C9A66B] text-[#C9A66B] scale-110' : 'text-[#F7F2EA]'
-            }`}
-          />
+    <article className="group bg-surface-container rounded-lg p-4 flex flex-col gap-4 shadow-md">
+      <div className="relative w-full aspect-square rounded overflow-hidden bg-surface-low">
+        <button type="button" onClick={() => onSelect(product)} className="block w-full h-full cursor-pointer" aria-label={`View ${product.name}`}>
+          <ProductVisual product={product} className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
         </button>
+        <span className="absolute top-3 left-3 bg-secondary-container/90 px-1.5 py-0.5 rounded-[2px] text-secondary-fixed text-[9px] font-semibold tracking-widest uppercase pointer-events-none">
+          {product.family}
+        </span>
+        <button
+          type="button"
+          onClick={() => toggleWishlist(product.id)}
+          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-surface-lowest/80 rounded-[2px] text-primary cursor-pointer"
+          aria-label={isFavorited ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`}
+          aria-pressed={isFavorited}
+        >
+          <Heart className={`w-3.5 h-3.5 ${isFavorited ? 'fill-current' : ''}`} strokeWidth={1.5} />
+        </button>
+      </div>
 
-        <div className="absolute bottom-3 left-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+      <div className="flex flex-col gap-1 flex-1">
+        <div className="flex items-baseline justify-between gap-3">
+          <h3 className="font-serif text-headline-sm font-semibold text-on-surface uppercase">
+            <button type="button" onClick={() => onSelect(product)} className="text-left uppercase cursor-pointer hover:text-primary transition-colors">
+              {product.name}
+            </button>
+          </h3>
+          <span className="font-serif text-headline-sm text-primary whitespace-nowrap">Rs. {product.price.toLocaleString()}</span>
+        </div>
+        <p className="text-body-sm text-on-surface-variant">
+          {product.character} · {noteLine}
+        </p>
+
+        <div className="flex flex-wrap gap-1.5 pt-1">
+          {accords.map((a, i) => (
+            <span
+              key={a.stage}
+              className={`bg-surface-high px-2.5 py-1 rounded-[2px] text-[10px] font-semibold tracking-wider uppercase ${
+                i === accords.length - 1 ? 'text-primary' : 'text-on-surface'
+              }`}
+            >
+              {a.stage}: {a.note}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2 pt-2 mt-auto">
+          <div className="flex bg-surface-low p-1 rounded-[2px]">
+            <span className="px-3 py-2 rounded-[2px] text-primary bg-surface-high text-[11px] font-semibold tracking-wider uppercase whitespace-nowrap">
+              {product.volume}
+            </span>
+          </div>
           <button
-            onClick={handleQuickAdd}
-            className="w-full py-2.5 px-4 bg-[#0E0B0C]/90 hover:bg-[#C9A66B] hover:text-[#0E0B0C] text-[#F7F2EA] border border-[#C9A66B]/50 backdrop-blur-md text-[11px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 cursor-pointer font-medium"
+            type="button"
+            onClick={handleAdd}
+            disabled={!product.inStock}
+            className="flex-1 h-11 bg-primary text-on-primary rounded-[2px] text-label-sm uppercase tracking-[0.2em] active:scale-95 transition-transform flex items-center justify-center gap-1.5 cursor-pointer hover:bg-primary-fixed disabled:opacity-40 disabled:pointer-events-none"
           >
-            {addedJustNow ? (
-              <>
-                <Check className="w-3.5 h-3.5" />
-                <span>Added</span>
-              </>
+            {!product.inStock ? (
+              'Sold Out'
+            ) : added ? (
+              'Added to Bag'
             ) : (
               <>
-                <Plus className="w-3.5 h-3.5" />
-                <span>Add to Cart</span>
+                <ShoppingBag className="w-4 h-4" strokeWidth={1.5} />
+                Add to Bag
               </>
             )}
           </button>
         </div>
       </div>
-
-      <div className="pt-4 pb-2 flex flex-col flex-1">
-        <div className="flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-[#C9A66B] font-light">
-          <span>{product.family}</span>
-          <span aria-hidden="true" className="text-[#C9A66B]/40">·</span>
-          <span>{product.volume}</span>
-          <span aria-hidden="true" className="text-[#C9A66B]/40">·</span>
-          <span>{product.concentration}</span>
-        </div>
-
-        <h3 className="font-serif-luxury text-xl sm:text-2xl text-[#F7F2EA] group-hover:text-[#C9A66B] transition-colors mt-1 font-light">
-          {product.name}
-        </h3>
-
-        <p className="text-xs text-[#E9E0D2]/70 line-clamp-1 mt-0.5 font-light">
-          {product.subtitle}
-        </p>
-
-        <div className="mt-2 text-[11px] text-[#F7F2EA]/60 font-light flex items-center gap-1.5 flex-wrap">
-          <span className="text-[#C9A66B]/80 font-normal">Notes:</span>
-          {product.notes.top.slice(0, 2).map((n, i) => (
-            <React.Fragment key={n}>
-              <span>{n}</span>
-              {i < 1 && <span aria-hidden="true" className="text-[#F7F2EA]/30">/</span>}
-            </React.Fragment>
-          ))}
-          {product.notes.heart[0] && (
-            <>
-              <span aria-hidden="true" className="text-[#F7F2EA]/30">/</span>
-              <span>{product.notes.heart[0]}</span>
-            </>
-          )}
-        </div>
-
-        <div className="mt-3 pt-2 border-t border-[#2A1621] flex items-center justify-between text-xs">
-          <div className="flex items-baseline gap-2">
-            <span className="font-serif-luxury text-lg text-[#F7F2EA]">
-              Rs. {product.price.toLocaleString()}
-            </span>
-            {product.originalPrice && (
-              <span className="text-[11px] text-[#E9E0D2]/40 line-through">
-                Rs. {product.originalPrice.toLocaleString()}
-              </span>
-            )}
-          </div>
-
-          <span className="text-[10px] uppercase tracking-wider text-[#C9A66B] group-hover:translate-x-1 transition-transform">
-            View
-          </span>
-        </div>
-      </div>
-    </div>
+    </article>
   );
 };
